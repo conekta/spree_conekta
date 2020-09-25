@@ -4,8 +4,11 @@
 
 <p class="field">
   <%= label_tag "name_on_card_#{payment_method.id}", Spree.t(:name_on_card) %><span class="required">*</span><br />
+  <% name = try_spree_current_user.try(:full_name) %>
+  <% name ||= "#{@order.bill_address.try(:first_name)} #{@order.bill_address.try(:last_name)}" %>
+  <% name ||= "#{@order.ship_address.try(:first_name)} #{@order.ship_address.try(:last_name)}" %>
   <%= text_field_tag "#{param_prefix}[name]",
-                     "#{@order.billing_firstname} #{@order.billing_lastname}",
+                     name,
                      { id: "name_on_card_#{payment_method.id}", 
                        data: { conekta: 'card[name]' } } %>
 </p>
@@ -52,7 +55,7 @@
                                         class: 'required cardCode',
                                         size: 5,
                                         data: { conekta: 'card[cvc]' } ) %>
-  <%= link_to "(#{Spree.t(:what_is_this)})", spree.content_path('cvv'), target: '_blank', "data-hook" => "cvv_link", id: "cvv_link" %>
+  <%#= link_to "(#{Spree.t(:what_is_this)})", spree.content_path('cvv'), target: '_blank', "data-hook" => "cvv_link", id: "cvv_link" %>
 </p>
 
 <% if payment_method.with_installments? %>

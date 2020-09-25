@@ -1,4 +1,12 @@
 <% param_prefix = "payment_source[#{payment_method.id}]" %>
-<%= hidden_field param_prefix, 'first_name', :value => @order.billing_firstname %>
-<%= hidden_field param_prefix, 'last_name', :value => @order.billing_lastname %>
+<% firstname = try_spree_current_user.try(:name) %>
+<% firstname ||= @order.bill_address.try(:first_name) %>
+<% firstname ||= @order.ship_address.try(:first_name) %>
+
+<% last_name = try_spree_current_user.try(:last_name) %>
+<% last_name ||= @order.bill_address.try(:last_name) %>
+<% last_name ||= @order.ship_address.try(:last_name) %>
+
+<%= hidden_field param_prefix, 'first_name', :value => firstname %>
+<%= hidden_field param_prefix, 'last_name', :value => last_name %>
 

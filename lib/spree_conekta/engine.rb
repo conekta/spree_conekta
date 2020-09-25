@@ -13,7 +13,11 @@ module SpreeConekta
 
     if Rails.version >= '3.1'
       initializer :assets do |config|
-        Rails.application.config.assets.precompile += %w( spree_conekta.js )
+        Rails.application.config.assets.precompile += %w(
+        spree/frontend/conekta.js
+        spree/frontend/spree_conekta.js
+        spree/frontend/spree_conekta_backup.js
+)
       end
     end
 
